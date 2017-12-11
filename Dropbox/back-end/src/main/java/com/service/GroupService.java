@@ -23,4 +23,8 @@ public class GroupService {
     public void updateUsernames(Groups groups) {
         groupRepository.save(groups);
     }
+
+    public void removeGroup(Groups groups) {
+        groupRepository.delete(groups);
+    }
 }

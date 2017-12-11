@@ -38,7 +38,7 @@ class Welcome extends Component {
                                 console.log(data);
                                 this.setState({
                                     result: data,
-                                    statusMessage: 'FILE UPLOAD SUCCESSFUL'
+                                    statusMessage: 'FOLDER CREATED SUCCESSFULLY'
                                 })
                             })
                         });

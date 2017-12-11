@@ -19,4 +19,13 @@ public class FileService {
     public void addFiles(Document document) {
         fileRepository.save(document);
     }
+
+    public void removeFiles(Document document) {
+        fileRepository.delete(document);
+    }
+
+    public void starFiles(Document document) {
+        fileRepository.save(document);
+    }
+
 }

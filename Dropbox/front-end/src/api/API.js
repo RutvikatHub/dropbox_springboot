@@ -86,7 +86,7 @@ export const uploadFile = (payload) =>
         });
 
 export const deleteFile = (payload) =>
-    fetch(`${api}/deleteFile`, {
+    fetch(`${api}/user/deleteFile`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -120,7 +120,7 @@ export const fileShare = (payload) =>
         });
 
 export const userAbout = (payload) =>
-    fetch(`${api}/about`, {
+    fetch(`${api}/user/about`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -137,7 +137,7 @@ export const userAbout = (payload) =>
         });
 
 export const starFile = (payload) =>
-    fetch(`${api}/starFile`, {
+    fetch(`${api}/user/starFile`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -206,7 +206,6 @@ export const getGroups = () =>
             return error;
         });
 
-
 export const updateUsernames = (payload) =>
     fetch(`${api}/user/updateUsernames`, {
         method: 'POST',
@@ -242,7 +241,41 @@ export const groupShare = (payload) =>
         });
 
 export const deleteGroup = (payload) =>
-    fetch(`${api}/deleteGroup`, {
+    fetch(`${api}/user/deleteGroup`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    })
+        .catch(error => {
+            console.log("This is error.");
+            return error;
+        });
+
+export const fetchActivity = (payload) =>
+    fetch(`${api}/user/fetchActivity`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    })
+        .catch(error => {
+            console.log("This is error.");
+            return error;
+        });
+
+export const createDirectory = (payload) =>
+    fetch(`${api}/user/createDirectory`, {
         method: 'POST',
         headers: {
             ...headers,

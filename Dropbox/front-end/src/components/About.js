@@ -17,38 +17,39 @@ class About extends Component {
         music: '',
         shows: '',
         sports: '',
-        aboutStatusMessage: ''
+        aboutStatusMessage: '',
+        userActivity: ''
     };
 
     componentWillMount() {
-        API.getDetails()
-            .then((res) => {
-                console.log("1 . Response status is --- " + res.status);
-                res.json().then((data) => {
-                    console.log("2 . Response status is --- " + data.status);
-
-                    if (data.status === 204) {
-                        console.log("The response overview is : " + data.overview);
-
-                        this.setState({
-                            overview: data.overview,
-                            work: data.work,
-                            education: data.education,
-                            contactNumber: data.contactNumber,
-                            lifeEvents: data.lifeEvents,
-                            music: data.music,
-                            shows: data.shows,
-                            sports: data.sports,
-                            aboutStatusMessage: "USER INFORMATION FETCHED SUCCESSFULLY"
-                        });
-                        console.log("Account update successful - 1");
-                    } else if (data.status === 500) {
-                        this.setState({
-                            aboutStatusMessage: "INTERNAL ERROR OCCURRED"
-                        });
-                    }
-                })
-            });
+        // API.getDetails()
+        //     .then((res) => {
+        //         console.log("1 . Response status is --- " + res.status);
+        //         res.json().then((data) => {
+        //             console.log("2 . Response status is --- " + data.status);
+        //
+        //             if (data.status === 204) {
+        //                 console.log("The response overview is : " + data.overview);
+        //
+        //                 this.setState({
+        //                     overview: data.overview,
+        //                     work: data.work,
+        //                     education: data.education,
+        //                     contactNumber: data.contactNumber,
+        //                     lifeEvents: data.lifeEvents,
+        //                     music: data.music,
+        //                     shows: data.shows,
+        //                     sports: data.sports,
+        //                     aboutStatusMessage: "USER INFORMATION FETCHED SUCCESSFULLY"
+        //                 });
+        //                 console.log("Account update successful - 1");
+        //             } else if (data.status === 500) {
+        //                 this.setState({
+        //                     aboutStatusMessage: "INTERNAL ERROR OCCURRED"
+        //                 });
+        //             }
+        //         })
+        //     });
     };
 
     handleAbout = (payload) => {
@@ -122,7 +123,24 @@ class About extends Component {
                     <div className="row">
                         {this.state.aboutStatusMessage}
                     </div>
+
+
+                    <div className="row">
+                        {this.state.userActivity}
+                    </div>
+
+                    <br/>
+
+                    | Upload file:    12/11/2017 13:22:57 |
+                    <br/>
+                    | Upload file:    12/11/2017 13:23:13 |
+                    <br/>
+                    | Delete file:    12/11/2017 13:54:26 |
+                    <br/>
+                    | Logout:    12/11/2017 13:54:44 |
                 </div>
+
+
 
                 <div className="col-sm-9">
 
