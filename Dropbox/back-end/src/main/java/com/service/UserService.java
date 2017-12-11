@@ -12,15 +12,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Iterable<User> getAllUsers(){
+    public Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public void addUser(User user){
+    public void addUser(User user) {
         userRepository.save(user);
     }
 
-    public List<User> login(String email,String password){
-        return userRepository.findByEmailAndPassword(email,password);
+    public List<User> login(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password);
     }
 }

@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface FileRepository extends CrudRepository<Document, Long>{
-    List<Document> findByDocumentOwnerAndDocumentPath(String documentOwner, String documentPath);
-
+    List<Document> findByFileOwner(String documentOwner);
 }
+

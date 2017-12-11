@@ -5,7 +5,7 @@ import './App.css';
 // import NewHomePage from "./components/NewHomePage";
 
 import {BrowserRouter} from 'react-router-dom';
-import NewerHomePage from "./components/NewerHomePage";
+import Login from "./components/Login";
 
 
 // import HomePage from "./components/HomePage";
@@ -13,11 +13,11 @@ import NewerHomePage from "./components/NewerHomePage";
     class App extends Component {
         render() {
             return (
-                <div className="App">
+                <div>
                     {/*<HomePage/>*/}
                     {/*<NewHomePage/>*/}
                     <BrowserRouter>
-                        <NewerHomePage/>
+                        <Login/>
                     </BrowserRouter>
                 </div>
             );

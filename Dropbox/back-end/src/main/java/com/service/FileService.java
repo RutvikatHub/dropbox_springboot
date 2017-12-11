@@ -12,7 +12,11 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    public List<Document> getFiles(String documentOwner, String documentPath) {
-        return fileRepository.findByDocumentOwnerAndDocumentPath(documentOwner, documentPath);
+    public List<Document> getFiles(String documentOwner) {
+        return fileRepository.findByFileOwner(documentOwner);
+    }
+
+    public void addFiles(Document document) {
+        fileRepository.save(document);
     }
 }

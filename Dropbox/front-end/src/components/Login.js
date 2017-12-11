@@ -1,74 +1,131 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import {Route, withRouter} from 'react-router-dom';
+import * as API from "../api/API";
+import Welcome from "./Welcome";
+import Signup from './Signup';
+import About from './About';
+import Groups from './Groups';
+
+import '../login.css'
 
 class Login extends Component {
 
-    static propTypes = {
-        handleSubmit: PropTypes.func.isRequired
-    };
-
     state = {
+        isLoggedIn: false,
+        message: '',
         username: '',
         password: ''
     };
 
-    componentWillMount(){
+    componentDidMount() {
         this.setState({
+            isLoggedIn: false,
+            message: '',
             username: '',
             password: ''
         });
     }
 
+    handleSubmit = (userdata) => {
+        API.doLogin(userdata)
+            .then((res) => {
+                if (res.status === 200) {
+                    this.setState({
+                        isLoggedIn: true,
+                        message: "Login.js - handleSubmit - Successfully Logged In !!",
+                        username: res.username,
+                        firstname: res.firstname,
+                        lastname: res.lastname
+                    });
+                    console.log("Login.js - handleSubmit - Successful login");
+                    console.log("Login.js - handleSubmit - Username: " + this.state.username);
+                    this.props.history.push("/welcome");
+                }
+                else if (res.status === 401) {
+                    this.setState({
+                        isLoggedIn: false,
+                        message: "Wrong username or password. Try again..!!"
+                    });
+                }
+            });
+    };
+
     render() {
         return (
-            <div className="row justify-content-md-center">
-                <div className="col-md-3">
-                    <form>
-                        <div className="form-group">
-                            <h1>Login</h1>
-                        </div>
-                        <div className="form-group">
+            <div className="container">
+                <div className="col-md-offset-5 col-md-4">
+
+                    <Route exact path="/" render={() => (
+                        <form className="form-login">
+
+                            <img src="https://goo.gl/yFaAFJ" alt="Icon"/>
+
+                            <h4>SIGN IN</h4>
+
                             <input
                                 className="form-control"
                                 type="text"
-                                label="Username"
-                                placeholder="Enter Username"
-                                value={this.state.username}
+                                label="username"
+                                placeholder="Enter username"
                                 onChange={(event) => {
                                     this.setState({
                                         username: event.target.value
                                     });
                                 }}
                             />
-                        </div>
-
-                        <div className="form-group">
+                            <br/>
                             <input
                                 className="form-control"
                                 type="password"
                                 label="password"
                                 placeholder="Enter Password"
-                                value={this.state.password}
                                 onChange={(event) => {
                                     this.setState({
                                         password: event.target.value
                                     });
                                 }}
                             />
-                        </div>
-                        <div className="form-group">
-                            <button
-                                className="btn btn-primary"
-                                type="button"
-                                onClick={() => this.props.handleSubmit(this.state)}>
-                                Submit
-                            </button>
-                        </div>
-                    </form>
+                            <br/>
+                            <div className="wrapper">
+                                <button
+                                    className="btn btn-primary btn-group-sm"
+                                    type="button"
+                                    onClick={() => this.handleSubmit(this.state)}>
+                                    Login
+                                </button>
+                                <br/>
+                                <br/>
+                                <button className="btn btn-success btn-group-sm" onClick={() => {
+                                    this.props.history.push("/signup");
+                                }}>
+                                    Signup
+                                </button>
+                            </div>
+                        </form>
+                    )}/>
                 </div>
+
+                <Route exact path="/signup" render={() => (
+                    <div>
+                        <Signup/>
+                    </div>
+                )}/>
+
+                <Route exact path="/welcome" render={() => (
+                    <Welcome username={this.state.username} firstname={this.state.firstname}
+                             lastname={this.state.lastname}/>
+                )}/>
+
+                <Route path="/about" render={() => (
+                    <About username={this.state.username}/>
+                )}/>
+
+                <Route path="/groups" render={() => (
+                    <Groups username={this.state.username}/>
+                )}/>
             </div>
         );
     }
 }
 
-export default Login;
+export default withRouter(Login);

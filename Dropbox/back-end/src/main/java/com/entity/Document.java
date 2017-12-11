@@ -12,10 +12,20 @@ public class Document {
     private Integer id;
 
     private String documentName;
+    private String documentType;
+    private String path;
+    private String fileOwner;
 
-    private String documentOwner;
+    public Document() {
 
-    private String documentPath;
+    }
+
+    public Document(String documentName, String documentType, String path, String fileOwner) {
+        this.documentName = documentName;
+        this.documentType = documentType;
+        this.path = path;
+        this.fileOwner = fileOwner;
+    }
 
     public Integer getId() {
         return id;
@@ -33,19 +43,27 @@ public class Document {
         this.documentName = documentName;
     }
 
-    public String getDocumentOwner() {
-        return documentOwner;
+    public String getDocumentType() {
+        return documentType;
     }
 
-    public void setDocumentOwner(String documentOwner) {
-        this.documentOwner = documentOwner;
+    public void setDocumentType(String documentType) {
+        this.documentType = documentType;
     }
 
-    public String getDocumentPath() {
-        return documentPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setDocumentPath(String documentPath) {
-        this.documentPath = documentPath;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getFileOwner() {
+        return fileOwner;
+    }
+
+    public void setFileOwner(String fileOwner) {
+        this.fileOwner = fileOwner;
     }
 }
