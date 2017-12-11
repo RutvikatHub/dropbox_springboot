@@ -17,15 +17,15 @@ class Groups extends Component {
 
     componentWillMount() {
         API.getGroups()
-            .then((res) => {
-                res.json().then((data) => {
-                    console.log("In Groups - data : " + data);
+            .then((resp) => {
+                resp.json().then((data) => {
+                    console.log("In Groups - data : ");
                     console.log(data);
                     this.setState({
                         groups: data,
-                        statusMessage: 'GROUPS FETCHED SUCCESSFULLY'
-                    })
-                })
+                        statusMessage: 'GROUP CREATED SUCCESSFULLY'
+                    });
+                });
             });
     };
 
@@ -42,22 +42,20 @@ class Groups extends Component {
 
         API.createGroup(payload)
             .then((res) => {
-                res.json().then((data) => {
-                    console.log(data.status);
-                    if (data.status === 201) {
-                        API.getGroups()
-                            .then((res) => {
-                                res.json().then((data) => {
-                                    console.log("In Groups - data : " + data);
-                                    console.log(data);
-                                    this.setState({
-                                        groups: data,
-                                        statusMessage: 'GROUP CREATED SUCCESSFULLY'
-                                    });
+                console.log(res.status);
+                if (res.status === 201) {
+                    API.getGroups()
+                        .then((resp) => {
+                            resp.json().then((data) => {
+                                console.log("In Groups - data : ");
+                                console.log(data);
+                                this.setState({
+                                    groups: data,
+                                    statusMessage: 'GROUP CREATED SUCCESSFULLY'
                                 });
                             });
-                    }
-                });
+                        });
+                }
             });
 
     };
@@ -75,21 +73,19 @@ class Groups extends Component {
 
         API.updateUsernames(payload)
             .then((res) => {
-                res.json().then((data) => {
-                    if (data.status === 201) {
+                    if (res.status === 201) {
                         API.getGroups()
-                            .then((res) => {
-                                res.json().then((data) => {
-                                    console.log("In Groups - data : " + data);
+                            .then((resp) => {
+                                resp.json().then((data) => {
+                                    console.log("In Groups - data : ");
                                     console.log(data);
                                     this.setState({
                                         groups: data,
-                                        statusMessage: 'USERNAME ADDED TO THE GROUP SUCCESSFULLY'
+                                        statusMessage: 'GROUP CREATED SUCCESSFULLY'
                                     });
                                 });
                             });
                     }
-                });
             });
     };
 

@@ -1,8 +1,10 @@
 package com.controller;
 
+import com.entity.Groups;
 import com.entity.User;
 import com.entity.Document;
 import com.service.FileService;
+import com.service.GroupService;
 import com.service.UserService;
 
 import org.json.JSONObject;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.html.HTMLParagraphElement;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -34,6 +37,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private GroupService groupService;
 
     String absolutePath = System.getProperty("user.dir");
 
@@ -104,7 +109,6 @@ public class UserController {
 
         System.out.println("List Details");
         System.out.println(list.size());
-        System.out.println(list.get(0).getDocumentName());
 
         return new ResponseEntity(list, HttpStatus.OK);
     }
@@ -119,7 +123,6 @@ public class UserController {
 
             return new ResponseEntity(res_message,HttpStatus.BAD_REQUEST);
         }
-
         try {
 
             System.out.println("In upload files TRY");
@@ -129,8 +132,11 @@ public class UserController {
             Path path = Paths.get(absolutePath + "\\src\\main\\public\\uploads\\" + session.getAttribute("name") + "\\" + file.getOriginalFilename());
             Files.write(path, bytes);
 
-            fileService.addFiles(new Document(file.getOriginalFilename(), "file", path.toString(), session.getAttribute("name").toString()));
+            final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
+            //Files.probeContentType(path);
+            //fileTypeMap.getContentType(file.getOriginalFilename())
 
+            fileService.addFiles(new Document(session.getAttribute("name").toString(), file.getOriginalFilename(), "file", path.toString(), session.getAttribute("name").toString()));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,7 +147,6 @@ public class UserController {
         System.out.println("This is message : " + res_message);
         return new ResponseEntity(res_message,HttpStatus.OK);
     }
-
 
     @PostMapping(value = "/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -155,4 +160,70 @@ public class UserController {
 
         return new ResponseEntity(res_message, HttpStatus.OK);
     }
+
+    @PostMapping(path="/fileShare",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> fileShare (@RequestBody String payload, HttpSession session) {
+
+
+        System.out.println("In File Share");
+
+        JSONObject jsonObject = new JSONObject(payload);
+
+        fileService.addFiles(new Document(jsonObject.getString("sharedWith"), jsonObject.getString("documentName"), jsonObject.getString("documentType"), jsonObject.getString("path"), jsonObject.getString("username")));
+
+        Map res_message = new HashMap();
+        res_message.put("status", 201);
+        System.out.println("This is message : " + res_message);
+
+        return new ResponseEntity(res_message,HttpStatus.OK);
+    }
+
+    @PostMapping(path="/createGroup",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createGroup (@RequestBody String payload, HttpSession session) {
+
+
+        System.out.println("In Group Share");
+
+        JSONObject jsonObject = new JSONObject(payload);
+
+        groupService.addGroups(new Groups((session.getAttribute("name")).toString(), jsonObject.getString("groupname"), ""));
+
+        Map res_message = new HashMap();
+        res_message.put("status", 201);
+        System.out.println("This is message : " + res_message);
+
+        return new ResponseEntity(res_message,HttpStatus.OK);
+    }
+
+    @GetMapping(path="/getGroups",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getGroups (HttpSession session) {
+
+
+        System.out.println("In Get Group");
+
+        List<Groups> groupslist = groupService.getGroups((session.getAttribute("name")).toString());
+
+        System.out.println(groupslist);
+        System.out.println(groupslist.size());
+
+        return new ResponseEntity(groupslist, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/updateUsernames",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUsernames (@RequestBody String payload, HttpSession session) {
+
+
+        System.out.println("In Update Usernames");
+
+        JSONObject jsonObject = new JSONObject(payload);
+
+        groupService.updateUsernames(new Groups((session.getAttribute("name")).toString(), jsonObject.getString("groupname"), jsonObject.getString("usernames")));
+
+        Map res_message = new HashMap();
+        res_message.put("status", 201);
+        System.out.println("This is message : " + res_message);
+
+        return new ResponseEntity(res_message, HttpStatus.OK);
+    }
+
 }

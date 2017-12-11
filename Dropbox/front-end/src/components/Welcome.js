@@ -28,8 +28,8 @@ class Welcome extends Component {
 
         API.uploadFile(payload)
             .then((res) => {
-            console.log("The upload response is :");
-            console.log(res);
+                console.log("The upload response is :");
+                console.log(res);
                 if (res.status === 201) {
                     console.log("In Welcome.js - uploadFile completed");
                     API.getFiles()
@@ -127,8 +127,20 @@ class Welcome extends Component {
     componentWillMount() {
         console.log("Welcome.js - In componentWillMount");
         this.setState({
-            username: this.props.username
+            username: this.props.username,
         });
+
+        API.getFiles()
+            .then((res) => {
+                res.json().then((data) => {
+                    console.log("In Welcome - data : ");
+                    console.log(data);
+                        this.setState({
+                            result: data,
+                            statusMessage: ''
+                        })
+                });
+            });
     };
 
     handleDeleteFile = (payload) => {
@@ -187,10 +199,10 @@ class Welcome extends Component {
                 res.json().then((data) => {
                     console.log("In Welcome - data : ");
                     console.log(data);
-                    this.setState({
-                        result: data,
-                        statusMessage: ''
-                    })
+                        this.setState({
+                            result: data,
+                            statusMessage: ''
+                        })
                 });
             });
     };
@@ -276,57 +288,53 @@ class Welcome extends Component {
                 </div>
 
                 <div className="col-sm-9">
-                    {
-                        this.state.result.map((fileObject) => {
-                                return (
-                                    <table className="table" key={fileObject.id}>
-                                        <tbody>
-                                        <tr>
-                                            {/*<td>{fileObject._id}</td>*/}
+                    {this.state.result && (this.state.result.map(fileObject => (
+                        <table className="table" key={fileObject.id}>
+                            <tbody>
+                            <tr>
+                                {/*<td>{fileObject._id}</td>*/}
 
-                                            <td className="col-sm-3">
-                                                <td>{fileObject.documentName} :</td>
+                                <td className="col-sm-3">
+                                    <td>{fileObject.documentName} :</td>
 
-                                                <td>{fileObject.documentType}</td>
-                                            </td>
+                                    <td>{fileObject.documentType}</td>
+                                </td>
 
-                                            <td className="col-sm-3">{fileObject.path}</td>
-                                            <td className="col-sm-1">{fileObject.fileOwner}</td>
+                                <td className="col-sm-3">{fileObject.path}</td>
+                                <td className="col-sm-1">{fileObject.fileOwner}</td>
 
-                                            <td className="col-sm-2">
-                                                <td>
-                                                    <img src={fileObject.starImage}
-                                                         onClick={() => this.handleStarFile(fileObject._id)} height="25"
-                                                         width="25">
-                                                    </img>
-                                                </td>
-                                                <td>
-                                                    <img src="https://image.flaticon.com/icons/png/128/61/61391.png"
-                                                         onClick={() => this.handleDeleteFile(fileObject._id)} height="25"
-                                                         width="25">
-                                                    </img>
-                                                </td>
-                                                <td>
-                                                    <img
-                                                        src="https://www.shareicon.net/data/128x128/2015/09/19/643381_internet_512x512.png"
-                                                        onClick={() => this.handleFileShare(fileObject)} height="25"
-                                                        width="25"></img>
-                                                </td>
-                                                <td>
-                                                    <img
-                                                        src="https://goo.gl/Dwspsz"
-                                                        onClick={() => this.handleGroupShare(fileObject)} height="30"
-                                                        width="30"></img>
-                                                </td>
+                                <td className="col-sm-2">
+                                    <td>
+                                        <img src={fileObject.starImage}
+                                             onClick={() => this.handleStarFile(fileObject._id)} height="25"
+                                             width="25">
+                                        </img>
+                                    </td>
+                                    <td>
+                                        <img src="https://image.flaticon.com/icons/png/128/61/61391.png"
+                                             onClick={() => this.handleDeleteFile(fileObject._id)} height="25"
+                                             width="25">
+                                        </img>
+                                    </td>
+                                    <td>
+                                        <img
+                                            src="https://www.shareicon.net/data/128x128/2015/09/19/643381_internet_512x512.png"
+                                            onClick={() => this.handleFileShare(fileObject)} height="25"
+                                            width="25"></img>
+                                    </td>
+                                    <td>
+                                        <img
+                                            src="https://goo.gl/Dwspsz"
+                                            onClick={() => this.handleGroupShare(fileObject)} height="30"
+                                            width="30"></img>
+                                    </td>
 
-                                            </td>
+                                </td>
 
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                )
-                            }
-                        )
+                            </tr>
+                            </tbody>
+                        </table>
+                    )))
                     }
                 </div>
 

@@ -13,7 +13,7 @@ public class FileService {
     private FileRepository fileRepository;
 
     public List<Document> getFiles(String documentOwner) {
-        return fileRepository.findByFileOwner(documentOwner);
+        return fileRepository.findByUsername(documentOwner);
     }
 
     public void addFiles(Document document) {

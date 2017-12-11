@@ -11,6 +11,7 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    private String username;
     private String documentName;
     private String documentType;
     private String path;
@@ -20,11 +21,20 @@ public class Document {
 
     }
 
-    public Document(String documentName, String documentType, String path, String fileOwner) {
+    public Document(String username, String documentName, String documentType, String path, String fileOwner) {
+        this.username = username;
         this.documentName = documentName;
         this.documentType = documentType;
         this.path = path;
         this.fileOwner = fileOwner;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getId() {
